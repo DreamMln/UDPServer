@@ -11,37 +11,35 @@ namespace UDPServer
         {
             Console.WriteLine("UDP Server/Listener!");
             //User Datagram Protocol, UDP er en protokol til overførsel af data.
-            //UDP er en del af Internet-protokolstakken.
-            //UDP giver ingen garanti for at data kommer frem (eller rettere:
+            //UDP er en del af Internet-protokolstakken. Og giver ingen garanti for at data kommer frem (eller rettere:
             //Afsenderen får ikke besked hvis data ikke kommer frem, ligeledes
             //får afsender ikke besked hvorvidt data er modtaget).
 
-            //To create a server, the first thing you need to do is listen for
-            //incoming messages. Client og Server skal kommunikere, det er det opgaven går ud på.
-            //SERVEREN VIL GERNE MODTAGE/RECIEVE MESSAGES FRA CLIENT/SENDER
+            //Client og Server skal kommunikere, det er det opgaven går ud på.
+            //SERVEREN VIL GERNE MODTAGE/RECIEVE MESSAGES FRA EN CLIENT/SENDER (LYTTE/LISTENER TIL INDKOMMENDE MESSAGES)
 
-            //listen for incoming messages. In C# you do this by creating an UdpClient
-            //and binding (listening) it to a specific network adapter and UDP port
-            //initialize a using statement
-            //The UdpClient class provides simple methods for sending and
-            //receiving connectionless UDP in blocking synchronous mode.
-            //connectionless transport protocol.
+            //LYTTE til indkommende messages. I C# gæres dette ved at create/oprette en UdpClient
+            //og bruge binding (listening) det til et specik netværk adapter samt en UDP port
+            //først initialiseres et using statement
+            //UdpClient class - har nogle metoder der bruges til at sende
+            //modtage connectionless UDP. det er en transport protocol.
+
             using (UdpClient socket = new UdpClient())
             {
-                //This only initializes the object binding it is done like:
-                //This example “listens” on port 5005 on all network adapters
-                //on the PC it is running.
-                // initializes the object binding
+                //Her/lytter “listens” der på port 5005, på alle netværks adapters
+                //på den PC det køres.
+                // her initialiseres object binding:
                 socket.Client.Bind(new IPEndPoint(IPAddress.Any, 5005));
-                //IPEndPoint - contains the host and local or remote port information needed by
-                //an application to connect to a service on a host. By combining
-                //the host's IP address and port number of a service, the
-                //IPEndPoint class forms a connection point to a service.
+                //IPEndPoint - indeholder en host og en local eller remote port, som er den information der behøves
+                //for at få en application til at connecte til en service på en host. ved at kombinere
+                // hosten's IP address og port-nummer på en service, tager
+                //IPEndPoint class og opretter et connection point til den service.
                 IPEndPoint clientEndpoint = null;
-                //byte array - A byte array is an array of bytes.
-                //You could use a byte array to store a collection of binary data
-                //One byte - det er 8 bits.One byte character sets can contain 255
-                //characters.The current standard.
+                //byte array - et byte array er et array med/af bytes.
+                //det kan bruges til at have en collection af binary data
+                //En byte - er 8 bits. En byte character sæt kan indeholde 0-255
+                //characters.
+                //modtager fra en client
                 byte[] dataReceived = socket.Receive(ref clientEndpoint);
                 //object returned from the Receive function is a byte array.
                 //Usually it is not interesting for us to simply view bytes,
@@ -50,6 +48,8 @@ namespace UDPServer
                 //information processing needs - konverter til en string
                 //Converts the bytes to a string using the UTF8 encoding,
                 //the encoding method should be the same on client and server
+                //Encoding - konvertere det til en string
+                //UTF8 - beskederne sendes i UTF8 format
                 string messageSent = Encoding.UTF8.GetString(dataReceived);
                 //message shown in the console
                 Console.WriteLine("Message received from client: " + messageSent);
